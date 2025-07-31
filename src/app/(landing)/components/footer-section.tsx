@@ -21,7 +21,7 @@ function FooterSection() {
                 height={128}
                 className="size-8"
               />
-              <span>AutoForms</span>
+              <span>AutoFormms</span>
             </div>
             <p className="text-sm text-muted-foreground">
               Streamline your workflow with our all-in-one SaaS platform. Boost

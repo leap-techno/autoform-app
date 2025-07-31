@@ -6,6 +6,9 @@ import Link from "next/link";
 import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useConvexAuth } from "convex/react";
+import { SignInButton, UserButton } from "@clerk/nextjs";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface HeaderProps {
   isScrolled: boolean;
@@ -24,6 +27,7 @@ function Header({
   mounted,
   theme,
 }: HeaderProps) {
+  const { isAuthenticated, isLoading } = useConvexAuth();
   return (
     <header
       className={`sticky top-0 z-50 w-full backdrop-blur-lg transition-all duration-300 ${
@@ -35,8 +39,14 @@ function Header({
           {/* <div className="size-8 rounded-lg bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-primary-foreground">
             A*
           </div> */}
-          <Image src={"/logo.svg"} alt="AutoForms" width={128} height={128} className="size-8"/>
-          <span>AutoForms</span>
+          <Image
+            src={"/logo.svg"}
+            alt="AutoForms"
+            width={128}
+            height={128}
+            className="size-8"
+          />
+          <span>AutoFormms</span>
         </div>
         <nav className="hidden md:flex gap-8">
           <Link
@@ -78,16 +88,38 @@ function Header({
             )}
             <span className="sr-only">Toggle theme</span>
           </Button>
-          <Link
-            href="#"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Log in
-          </Link>
-          <Button className="rounded-full">
-            Get Started
-            <ChevronRight className="ml-1 size-4" />
-          </Button>
+          {isLoading && (
+            <>
+              <Skeleton className="h-9 w-16 rounded-lg" />
+              <Skeleton className="h-9 w-24 rounded-full" />
+            </>
+          )}
+          {!isAuthenticated && !isLoading && (
+            <>
+              <SignInButton mode="modal">
+                <Button type="button" variant={"outline"}>
+                  Log in
+                </Button>
+              </SignInButton>
+              <SignInButton mode="redirect">
+                <Button className="rounded-full">
+                  Get Started
+                  <ChevronRight className="ml-1 size-4" />
+                </Button>
+              </SignInButton>
+            </>
+          )}
+          {isAuthenticated && !isLoading && (
+            <>
+              <a href="/dashboard">
+                <Button className="rounded-full">
+                  Dashboard
+                  <ChevronRight className="ml-1 size-4" />
+                </Button>
+              </a>
+              <UserButton />
+            </>
+          )}
         </div>
         <div className="flex items-center gap-4 md:hidden">
           <Button
