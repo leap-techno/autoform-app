@@ -3,13 +3,18 @@
 
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
+import { useQuery } from "convex/react";
 import { Sidebar } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { ComponentRef } from "react";
+import { api } from "../../../../convex/_generated/api";
 
 function SidebarPrimary() {
   const isPathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const documents = useQuery(api.documents.fetchAll);
+
+  console.log(documents);
 
   const isResizingRef = React.useRef(false);
   const sidebarRef = React.useRef<ComponentRef<"aside">>(null);

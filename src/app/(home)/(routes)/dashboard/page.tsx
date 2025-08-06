@@ -1,17 +1,34 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
+import { useMutation } from "convex/react";
 import { PlusCircle } from "lucide-react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import React from "react";
+import { api } from "../../../../../convex/_generated/api";
+import { toast } from "sonner";
 
 function DashbaordPage() {
   const { user, isSignedIn } = useUser();
+  const createDocument = useMutation(api.documents.create);
 
   if (!isSignedIn) {
     redirect("/");
   }
+
+  // document in create actions
+  const documentCreateHandler = () => {
+    const data = createDocument({
+      title: "Untitled",
+    });
+
+    toast.promise(data, {
+      loading: "Creating a New Document",
+      success: "Document Created",
+      error: "Document Creation Failed",
+    });
+  };
 
   return (
     <div className="w-full">
@@ -36,7 +53,12 @@ function DashbaordPage() {
                   Create your first document here...
                 </p>
                 <div className="mt-5">
-                  <Button className="" size={"lg"}>
+                  <Button
+                    className=""
+                    size={"lg"}
+                    type="button"
+                    onClick={documentCreateHandler}
+                  >
                     <PlusCircle className="mr-1" />
                     Create Document
                   </Button>
