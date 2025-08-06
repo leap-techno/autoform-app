@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { cn } from "@/lib/utils";
@@ -19,21 +20,34 @@ function SidebarPrimary() {
 
   const handleMouseMove = (e: MouseEvent) => {
     if (!isResizingRef.current) {
-      return
+      return;
     }
     let newWidth = e.clientX;
-    
-    if(newWidth < 240 ) newWidth = 240
-    if(newWidth > 480 ) newWidth = 480
-    
+
+    if (newWidth < 240) newWidth = 240;
+    if (newWidth > 480) newWidth = 480;
+
+    // set sidebar into current format
+    if (sidebarRef.current && navbarRef.current) {
+      console.log(newWidth);
+
+      sidebarRef.current.style.width = `${newWidth}px`;
+      navbarRef.current.style.setProperty("left", `${newWidth}px`);
+      navbarRef.current.style.setProperty(
+        "width",
+        `calc(100% - ${newWidth}px)`
+      );
+    }
   };
 
   const handleMouseUp = () => {
     isResizingRef.current = false;
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
   };
 
   const mouseDownHandler = (
-    e: React.MouseEvent<MouseEvent, HTMLDivElement>
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     e.preventDefault();
     e.stopPropagation();
@@ -41,6 +55,43 @@ function SidebarPrimary() {
     isResizingRef.current = true;
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
+  };
+
+  // Resize back to the normal
+  const onClickResize = () => {
+    if (sidebarRef.current && navbarRef.current) {
+      console.log("Value do not expand");
+      setIsCollapsed(false);
+      setIsResetting(true);
+
+      sidebarRef.current.style.width = isMobile ? "100%" : "240px";
+      navbarRef.current.style.setProperty(
+        "width",
+        isMobile ? "0" : "calc(100% - 240px)"
+      );
+      navbarRef.current.style.setProperty("left", isMobile ? "100%" : "240px");
+
+      setTimeout(() => {
+        setIsResetting(false);
+      }, 300);
+    }
+  };
+
+  // Only if the collapse is needful otherwise archive this
+  const sidebarCollapse = () => {
+    if (sidebarRef.current && navbarRef.current) {
+      setIsCollapsed(true);
+      setIsResetting(true);
+
+      sidebarRef.current.style.width = "0";
+
+      navbarRef.current.style.setProperty("width", "100%");
+      navbarRef.current.style.setProperty("left", "0%");
+
+      setTimeout(() => {
+        setIsResetting(false);
+      }, 300);
+    }
   };
 
   return (
@@ -59,6 +110,7 @@ function SidebarPrimary() {
             isMobile && "opacity-100"
           )}
           role="button"
+          onClick={sidebarCollapse}
         >
           <Sidebar className="p-0.5" />
         </div>
@@ -71,6 +123,8 @@ function SidebarPrimary() {
         <div
           className="opacity-0 group-hover/sidebar:opacity-100 
         transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0"
+          onMouseDown={mouseDownHandler}
+          onClick={onClickResize}
         />
       </aside>
       <nav
@@ -83,7 +137,12 @@ function SidebarPrimary() {
       >
         <span className="bg-transparent w-full px-3 py-2">
           {isCollapsed && (
-            <Sidebar className="p-0.5 text-muted-foreground" role="button" />
+            <Sidebar
+              size={28}
+              className="p-1 text-muted-foreground hover:bg-accent rounded-md"
+              role="button"
+              onClick={onClickResize}
+            />
           )}
         </span>
       </nav>
