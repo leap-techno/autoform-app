@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { cn } from "@/lib/utils";
@@ -17,6 +17,21 @@ function SidebarPrimary() {
 
   const [isReseting, setIsResetting] = React.useState<boolean>(false);
   const [isCollapsed, setIsCollapsed] = React.useState<boolean>(isMobile);
+
+  // Resize on mobile to the max
+  React.useEffect(() => {
+    if (isMobile) {
+      sidebarCollapse();
+    } else {
+      onClickResize();
+    }
+  }, [isMobile]);
+
+  React.useEffect(() => {
+    if (isMobile) {
+      sidebarCollapse();
+    }
+  }, [isPathname, isMobile]);
 
   const handleMouseMove = (e: MouseEvent) => {
     if (!isResizingRef.current) {
