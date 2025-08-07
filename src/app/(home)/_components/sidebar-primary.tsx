@@ -3,18 +3,19 @@
 
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { useQuery } from "convex/react";
-import { Sidebar } from "lucide-react";
+import { useMutation, useQuery } from "convex/react";
+import { File, PlusCircle, Sidebar } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { ComponentRef } from "react";
 import { api } from "../../../../convex/_generated/api";
+import CreateItem from "./create-item";
+import { toast } from "sonner";
 
 function SidebarPrimary() {
   const isPathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const documents = useQuery(api.documents.fetchAll);
-
-  console.log(documents);
+  const createDocument = useMutation(api.documents.create);
 
   const isResizingRef = React.useRef(false);
   const sidebarRef = React.useRef<ComponentRef<"aside">>(null);
@@ -114,6 +115,19 @@ function SidebarPrimary() {
     }
   };
 
+  // Create new document
+  const documentCreateHandler = () => {
+    const data = createDocument({
+      title: "Untitled",
+    });
+
+    toast.promise(data, {
+      loading: "Creating a New Document",
+      success: "Document Created",
+      error: "Document Creation Failed",
+    });
+  };
+
   return (
     <>
       <aside
@@ -134,11 +148,24 @@ function SidebarPrimary() {
         >
           <Sidebar className="p-0.5" />
         </div>
+        {/* <SidebarHeader /> */}
+        <div className="my-6 w-full">
+          <CreateItem
+            onClick={documentCreateHandler}
+            label={"New Document"}
+            icon={PlusCircle}
+          />
+        </div>
         <div>
           <p>Action items</p>
         </div>
-        <div className="mt-4">
-          <p>Documents</p>
+        <div className="mt-4 flex flex-col gap-y-2 p-1 text-slate-500">
+          {documents?.map((doc) => (
+            <span key={doc._id} className="flex gap-x-1">
+              <File size={20} absoluteStrokeWidth />
+              <p className="text-sm font-semibold">{doc.title}</p>
+            </span>
+          ))}
         </div>
         <div
           className="opacity-0 group-hover/sidebar:opacity-100 
