@@ -4,7 +4,7 @@
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useMutation, useQuery } from "convex/react";
-import { File, PlusCircle, Sidebar } from "lucide-react";
+import { File, PlusCircle, Search, Settings, Sidebar } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { ComponentRef } from "react";
 import { api } from "../../../../convex/_generated/api";
@@ -149,12 +149,26 @@ function SidebarPrimary() {
           <Sidebar className="p-0.5" />
         </div>
         {/* <SidebarHeader /> */}
-        <div className="my-6 w-full">
+
+        <div className="mt-6 mb-3 w-full">
           <CreateItem
             onClick={documentCreateHandler}
             label={"New Document"}
             icon={PlusCircle}
           />
+        </div>
+        {/* Search bar */}
+        <div className="mb-3">
+          <CreateItem
+            label="Search Docs"
+            icon={Search}
+            isSearch
+            onClick={() => {}}
+          />
+        </div>
+        {/* Settings */}
+        <div className="mb-6">
+          <CreateItem label="Settings" icon={Settings} onClick={() => {}} />
         </div>
         <div>
           <p>Action items</p>
