@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use clinet";
 
-import { ChevronDown, ChevronRight, LucideIcon, PlusIcon } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronRight,
+  LucideIcon,
+  MoreHorizontal,
+  PlusIcon,
+  Trash2,
+} from "lucide-react";
 import React from "react";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
@@ -10,6 +17,13 @@ import { useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface CreateItemProps {
   id?: Id<"documents">;
@@ -101,13 +115,40 @@ function CreateItem({
         </kbd>
       )}
       {!!id && (
-        <div
-          role="button"
-          onClick={onCreateNewDocument}
-          className="ml-auto flex gap-x-2 items-center"
-        >
-          <div className="opacity-0 group-hover:opacity-100 h-full ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-700">
-            <PlusIcon className="h-4 w-4 text-muted-foreground" size={16} />
+        <div className="flex items-center ml-auto">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+              <div
+                role="button"
+                className="opacity-0 group-hover:opacity-100 ml-auto h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-700"
+              >
+                <MoreHorizontal className="h-4 w-4 shrink-0 text-muted-foreground" />
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-60"
+              forceMount
+              side="right"
+              align="start"
+            >
+              <DropdownMenuItem onClick={() => {}}>
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <div className="text-xs p-2 text-muted-foreground">
+                last edited by me
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <div
+            role="button"
+            onClick={onCreateNewDocument}
+            className="ml-auto flex gap-x-2 items-center"
+          >
+            <div className="opacity-0 group-hover:opacity-100 h-full ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-700">
+              <PlusIcon className="h-4 w-4 text-muted-foreground" size={16} />
+            </div>
           </div>
         </div>
       )}
