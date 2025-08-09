@@ -41,3 +41,29 @@ export const fetchAll = query({
     return documents;
   },
 });
+
+// get documents for sidebar
+export const fetchAllForSidebar = query({
+  args: {
+    parentDoc: v.optional(v.id("documents")),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Not authenticated user");
+    }
+
+    const userId = identity.subject;
+    const documents = await ctx.db
+      .query("documents")
+      .withIndex("by_user_parent", (q) =>
+        q.eq("userId", userId).eq("parentDocumentId", args.parentDoc)
+      )
+      .filter((q) => q.eq(q.field("isArchived"), false))
+      .order("desc")
+      .collect();
+
+    return documents;
+  },
+});

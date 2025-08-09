@@ -4,17 +4,17 @@
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useMutation, useQuery } from "convex/react";
-import { File, PlusCircle, Search, Settings, Sidebar } from "lucide-react";
+import { PlusCircle, Search, Settings, Sidebar } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { ComponentRef } from "react";
 import { api } from "../../../../convex/_generated/api";
 import CreateItem from "./create-item";
 import { toast } from "sonner";
+import DocumentsList from "./documents-list";
 
 function SidebarPrimary() {
   const isPathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const documents = useQuery(api.documents.fetchAll);
   const createDocument = useMutation(api.documents.create);
 
   const isResizingRef = React.useRef(false);
@@ -173,13 +173,9 @@ function SidebarPrimary() {
         <div>
           <p>Action items</p>
         </div>
+        {/* Documents list goes here */}
         <div className="mt-4 flex flex-col gap-y-2 p-1 text-slate-500">
-          {documents?.map((doc) => (
-            <span key={doc._id} className="flex gap-x-1">
-              <File size={20} absoluteStrokeWidth />
-              <p className="text-sm font-semibold">{doc.title}</p>
-            </span>
-          ))}
+          <DocumentsList />
         </div>
         <div
           className="opacity-0 group-hover/sidebar:opacity-100 
