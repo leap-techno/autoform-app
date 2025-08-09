@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use clinet";
 
 import { ChevronDown, ChevronRight, LucideIcon, PlusIcon } from "lucide-react";

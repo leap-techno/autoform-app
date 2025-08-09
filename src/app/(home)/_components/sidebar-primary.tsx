@@ -3,7 +3,7 @@
 
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import { PlusCircle, Search, Settings, Sidebar } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { ComponentRef } from "react";
