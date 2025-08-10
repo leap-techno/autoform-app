@@ -4,13 +4,19 @@
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useMutation } from "convex/react";
-import { PlusCircle, Search, Settings, Sidebar } from "lucide-react";
+import { PlusCircle, Search, Settings, Sidebar, Trash2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { ComponentRef } from "react";
 import { api } from "../../../../convex/_generated/api";
 import CreateItem from "./create-item";
 import { toast } from "sonner";
 import DocumentsList from "./documents-list";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import TrashBox from "./trash-box";
 
 function SidebarPrimary() {
   const isPathname = usePathname();
@@ -166,12 +172,26 @@ function SidebarPrimary() {
             onClick={() => {}}
           />
         </div>
+        {/* Trash */}
+        <div className="mb-3">
+          <Popover>
+            <PopoverTrigger className="w-full mt-0">
+              <CreateItem label="Trash" icon={Trash2} onClick={() => {}} />
+            </PopoverTrigger>
+            <PopoverContent
+              className="w-72 p-0"
+              side={isMobile ? "bottom" : "right"}
+            >
+              <TrashBox />
+            </PopoverContent>
+          </Popover>
+        </div>
         {/* Settings */}
         <div className="mb-6">
           <CreateItem label="Settings" icon={Settings} onClick={() => {}} />
         </div>
-        <div>
-          <p>Action items</p>
+        <div className="flex sm:ml-4 items-center mt-2">
+          <p className="text-muted-foreground font-medium">Documents</p>
         </div>
         {/* Documents list goes here */}
         <div className="mt-4 flex flex-col gap-y-2 p-1 text-slate-500">

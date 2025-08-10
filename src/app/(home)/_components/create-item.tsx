@@ -52,6 +52,7 @@ function CreateItem({
 }: CreateItemProps) {
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
   const createDocument = useMutation(api.documents.create);
+  const archiveDocument = useMutation(api.documents.archiveDocument);
   const router = useRouter();
 
   const hanldeItemExpanded = (
@@ -81,6 +82,22 @@ function CreateItem({
       loading: "Creating a New Document",
       success: "Document Created",
       error: "Document Creation Failed",
+    });
+  };
+
+  // On moving to trash
+  const handleMoveToTrash = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (!id) return;
+
+    event.stopPropagation();
+    const archive = archiveDocument({ documentId: id });
+
+    toast.promise(archive, {
+      loading: "Moveding to Trash",
+      success: "Document Moved to Trash",
+      error: "Failed to move to trash",
     });
   };
 
@@ -115,7 +132,16 @@ function CreateItem({
         </kbd>
       )}
       {!!id && (
-        <div className="flex items-center ml-auto">
+        <div className="flex items-center ml-auto gap-x-2">
+          <div
+            role="button"
+            onClick={onCreateNewDocument}
+            className="ml-auto flex gap-x-2 items-center"
+          >
+            <div className="opacity-0 group-hover:opacity-100 h-full ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-700">
+              <PlusIcon className="h-4 w-4 text-muted-foreground" size={16} />
+            </div>
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
               <div
@@ -126,12 +152,12 @@ function CreateItem({
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className="w-60"
+              className="w-40 absolute z-[99999]"
               forceMount
               side="right"
               align="start"
             >
-              <DropdownMenuItem onClick={() => {}}>
+              <DropdownMenuItem onClick={handleMoveToTrash}>
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete
               </DropdownMenuItem>
@@ -141,15 +167,6 @@ function CreateItem({
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
-          <div
-            role="button"
-            onClick={onCreateNewDocument}
-            className="ml-auto flex gap-x-2 items-center"
-          >
-            <div className="opacity-0 group-hover:opacity-100 h-full ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-700">
-              <PlusIcon className="h-4 w-4 text-muted-foreground" size={16} />
-            </div>
-          </div>
         </div>
       )}
     </div>
