@@ -114,7 +114,7 @@ function CreateItem({
       {!!id && (
         <div
           role="button"
-          className="h-full rounded-md hover:bg-neutral-300 dark:bg-neutral-700 mr-1"
+          className="h-full rounded-md hover:bg-neutral-300 hover:dark:bg-neutral-700 mr-1"
           onClick={hanldeItemExpanded}
         >
           <ChevronIcon className="h-4 w-4 shrink-0" />

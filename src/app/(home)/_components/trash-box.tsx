@@ -94,14 +94,14 @@ function TrashBox() {
               <div
                 role="button"
                 onClick={(event) => onRestoreDocument(event, document._id)}
-                className="rounded p-2 hover:bg-neutral-200"
+                className="rounded p-2 hover:bg-neutral-200 hover:dark:bg-neutral-700"
               >
                 <Undo2 className="h-4 w-4 text-muted-foreground" />
               </div>
               <DeleteConfirmDialog
                 onConfirm={() => onDeleteDocument(document._id)}
               >
-                <div role="button" className="rounded p-2 hover:bg-neutral-200">
+                <div role="button" className="rounded p-2 hover:bg-neutral-200 hover:dark:bg-neutral-700">
                   <Trash2 className="h-4 w-4 text-muted-foreground" />
                 </div>
               </DeleteConfirmDialog>

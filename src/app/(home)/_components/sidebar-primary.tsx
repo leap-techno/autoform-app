@@ -17,6 +17,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import TrashBox from "./trash-box";
+import useSettingsStore from "@/hooks/store/use-settings";
 
 function SidebarPrimary() {
   const isPathname = usePathname();
@@ -29,6 +30,8 @@ function SidebarPrimary() {
 
   const [isReseting, setIsResetting] = React.useState<boolean>(false);
   const [isCollapsed, setIsCollapsed] = React.useState<boolean>(isMobile);
+
+  const { onOpen } = useSettingsStore();
 
   // Resize on mobile to the max
   React.useEffect(() => {
@@ -188,7 +191,7 @@ function SidebarPrimary() {
         </div>
         {/* Settings */}
         <div className="mb-6">
-          <CreateItem label="Settings" icon={Settings} onClick={() => {}} />
+          <CreateItem label="Settings" icon={Settings} onClick={onOpen} />
         </div>
         <div className="flex sm:ml-4 items-center mt-2">
           <p className="text-muted-foreground font-medium">Documents</p>
