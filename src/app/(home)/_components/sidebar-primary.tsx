@@ -92,7 +92,6 @@ function SidebarPrimary() {
   // Resize back to the normal
   const onClickResize = () => {
     if (sidebarRef.current && navbarRef.current) {
-      console.log("Value do not expand");
       setIsCollapsed(false);
       setIsResetting(true);
 

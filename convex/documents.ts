@@ -260,5 +260,44 @@ export const getDocumentById = query({
     if (document.isPublished && !document.isArchived) {
       return document;
     }
+    return document;
+  },
+});
+
+// update the document
+export const updateDocument = mutation({
+  args: {
+    id: v.id("documents"),
+    title: v.string(),
+    content: v.optional(v.string()),
+    coverImageUrl: v.optional(v.string()),
+    iconUrl: v.optional(v.string()),
+    isPublished: v.optional(v.boolean()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not authenticated user");
+    }
+
+    const userId = identity.subject;
+
+    // destrcuture the args
+    const { id, ...rest } = args;
+
+    const document = await ctx.db.get(id);
+
+    if (!document) {
+      throw new Error("Document not found");
+    }
+
+    if (document.userId !== userId) {
+      throw new Error("Unauthrized user for this action");
+    }
+
+    // Update the document
+    const updatedDocument = await ctx.db.patch(args.id, { ...rest });
+
+    return updatedDocument;
   },
 });
