@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useMutation } from "convex/react";
 import { Plus, Search, Settings, Sidebar, Trash2 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import React, { ComponentRef } from "react";
 import { api } from "../../../../convex/_generated/api";
 import CreateItem from "./create-item";
@@ -18,9 +18,11 @@ import {
 } from "@/components/ui/popover";
 import TrashBox from "./trash-box";
 import useSettingsStore from "@/hooks/store/use-settings";
+import NavbarDocument from "./navbar-document";
 
 function SidebarPrimary() {
   const isPathname = usePathname();
+  const params = useParams();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const createDocument = useMutation(api.documents.create);
 
@@ -215,16 +217,23 @@ function SidebarPrimary() {
           isMobile && "w-full left-0"
         )}
       >
-        <span className="bg-transparent w-full px-3 py-2">
-          {isCollapsed && (
-            <Sidebar
-              size={28}
-              className="p-1 text-muted-foreground hover:bg-accent rounded-md"
-              role="button"
-              onClick={onClickResize}
-            />
-          )}
-        </span>
+        {!!params.documentId ? (
+          <NavbarDocument
+            isCollapsed={isCollapsed}
+            onResetWidth={onClickResize}
+          />
+        ) : (
+          <span className="bg-transparent w-full px-3 py-2">
+            {isCollapsed && (
+              <Sidebar
+                size={28}
+                className="p-1 text-muted-foreground hover:bg-accent rounded-md"
+                role="button"
+                onClick={onClickResize}
+              />
+            )}
+          </span>
+        )}
       </nav>
     </>
   );

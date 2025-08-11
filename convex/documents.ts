@@ -232,3 +232,33 @@ export const deleteDocument = mutation({
     return document;
   },
 });
+
+// Get the document
+export const getDocumentById = query({
+  args: {
+    id: v.id("documents"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not authenticated user");
+    }
+
+    const userId = identity.subject;
+
+    const document = await ctx.db.get(args.id);
+
+    if (!document) {
+      throw new Error("Document not found");
+    }
+
+    if (userId !== document.userId) {
+      throw new Error("Unauthrized user for this action");
+    }
+
+    // if the document is published & not archived
+    if (document.isPublished && !document.isArchived) {
+      return document;
+    }
+  },
+});
