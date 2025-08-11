@@ -33,12 +33,21 @@ export const create = mutation({
 export const fetchAll = query({
   handler: async (ctx) => {
     // check authentication
-    const identity = ctx.auth.getUserIdentity();
+    const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
       throw new Error("Not authenticated user");
     }
+
+    const userId = identity.subject;
+
     // Get all the documents regardles
-    const documents = await ctx.db.query("documents").collect();
+    const documents = await ctx.db
+      .query("documents")
+      .withIndex("by_user_id", (q) => q.eq("userId", userId))
+      .filter((q) => q.eq(q.field("isArchived"), false))
+      .order("desc")
+      .collect();
+
     return documents;
   },
 });

@@ -31,7 +31,7 @@ function DashbaordPage() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full min-h-[100vh]">
       <div className="container mx-auto h-full">
         <div className="flex flex-col gap-y-4 lg:px-16 px-8 w-full h-full">
           <div className="flex flex-1 flex-col justify-center items-center">

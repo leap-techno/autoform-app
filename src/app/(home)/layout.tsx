@@ -4,6 +4,7 @@ import { Loader } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
 import SidebarPrimary from "./_components/sidebar-primary";
+import GlobalSearch from "@/components/global-search";
 
 interface HomeLayoutProps {
   children: Readonly<React.ReactNode>;
@@ -25,9 +26,10 @@ function HomeLayout({ children }: HomeLayoutProps) {
   if (!isAuthenticated) redirect("/");
 
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full flex">
+      <SidebarPrimary />
       <main className="flex-1 flex h-full overflow-y-auto">
-        <SidebarPrimary />
+        <GlobalSearch />
         {children}
       </main>
     </div>

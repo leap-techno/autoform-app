@@ -4,7 +4,7 @@
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useMutation } from "convex/react";
-import { PlusCircle, Search, Settings, Sidebar, Trash2 } from "lucide-react";
+import { Plus, Search, Settings, Sidebar, Trash2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { ComponentRef } from "react";
 import { api } from "../../../../convex/_generated/api";
@@ -160,7 +160,7 @@ function SidebarPrimary() {
           <CreateItem
             onClick={documentCreateHandler}
             label={"New Document"}
-            icon={PlusCircle}
+            icon={Plus}
           />
         </div>
         {/* Search bar */}
