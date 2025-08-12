@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -111,9 +112,9 @@ function Header({
           )}
           {isAuthenticated && !isLoading && (
             <>
-              <a href="/dashboard">
+              <a href="/documents">
                 <Button className="rounded-full">
-                  Dashboard
+                  Workspaces
                   <ChevronRight className="ml-1 size-4" />
                 </Button>
               </a>

@@ -8,6 +8,7 @@ import { Id } from "../../../../convex/_generated/dataModel";
 import { MenuIcon } from "lucide-react";
 import DocumentTitle from "../(routes)/documents/[documentId]/_components/document-title";
 import Banner from "../(routes)/documents/[documentId]/_components/banner";
+import QuickMenu from "./quick-menu";
 
 interface NavbarDocumentProps {
   isCollapsed: boolean;
@@ -23,8 +24,11 @@ function NavbarDocument({ isCollapsed, onResetWidth }: NavbarDocumentProps) {
 
   if (document === undefined) {
     return (
-      <nav className="bg-background dark:bg-neutral-800 px-3 py-2 flex items-center gap-x-2">
+      <nav className="bg-background dark:bg-neutral-800 px-3 py-2 flex items-center justify-between gap-x-2">
         <DocumentTitle.Skeleton />
+        <div className="flex items-center gap-x-2">
+          <QuickMenu.Skeleton />
+        </div>
       </nav>
     );
   }
@@ -43,8 +47,9 @@ function NavbarDocument({ isCollapsed, onResetWidth }: NavbarDocumentProps) {
             role="button"
           />
         )}
-        <div className="flex items-center w-full justify-between">
+        <div className="flex items-center w-full justify-between gap-x-4">
           <DocumentTitle data={document} />
+          <QuickMenu documentId={document._id} />
         </div>
       </div>
       {document.isArchived && <Banner documentId={document._id} />}
