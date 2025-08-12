@@ -7,6 +7,7 @@ import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { MenuIcon } from "lucide-react";
 import DocumentTitle from "../(routes)/documents/[documentId]/_components/document-title";
+import Banner from "../(routes)/documents/[documentId]/_components/banner";
 
 interface NavbarDocumentProps {
   isCollapsed: boolean;
@@ -46,6 +47,7 @@ function NavbarDocument({ isCollapsed, onResetWidth }: NavbarDocumentProps) {
           <DocumentTitle data={document} />
         </div>
       </div>
+      {document.isArchived && <Banner documentId={document._id} />}
     </>
   );
 }
