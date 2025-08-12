@@ -6,16 +6,14 @@ import { Id } from "../../../../../../convex/_generated/dataModel";
 import { useQuery } from "convex/react";
 import { api } from "../../../../../../convex/_generated/api";
 import DocumentToolbar from "./_components/document-toolbar";
+import { useParams } from "next/navigation";
 
-interface DocumentsIdPageProps {
-  params: {
-    documentId: any;
-  };
-}
+function DocumentsIdPage() {
+  const { documentId } = useParams();
+  console.log(documentId);
 
-function DocumentsIdPage({ params }: DocumentsIdPageProps) {
   const document = useQuery(api.documents.getDocumentById, {
-    id: params.documentId as Id<"documents">,
+    id: documentId as Id<"documents">,
   });
 
   if (document === undefined) {

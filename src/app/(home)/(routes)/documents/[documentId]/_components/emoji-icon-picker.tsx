@@ -31,17 +31,16 @@ function EmojiIconPicker({
   const theme = themeMap[currentTheme];
 
   return (
-    <>
-      <Popover>
-        <PopoverTrigger asChild={asChild}>{children}</PopoverTrigger>
-        <PopoverContent sideOffset={4}>
-          <EmojiPicker
-            theme={theme}
-            onEmojiClick={(data) => onChange(data.emoji)}
-          />
-        </PopoverContent>
-      </Popover>
-    </>
+    <Popover>
+      <PopoverTrigger asChild={asChild}>{children}</PopoverTrigger>
+      <PopoverContent className="w-max bg-transparent shadow-none border-0">
+        <EmojiPicker
+          theme={theme}
+          height={340}
+          onEmojiClick={(data) => onChange(data.emoji)}
+        />
+      </PopoverContent>
+    </Popover>
   );
 }
 
